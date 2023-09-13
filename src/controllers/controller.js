@@ -24,7 +24,7 @@ const register = async (req, res) => {
         await register.save();
         res.status(201).send({ message: "Registered Successfully", token });
       } else {
-        res.send({ error: "Email already registred with Us." });
+        res.send({ error: "Email already registred with us." });
       }
     }
   }
