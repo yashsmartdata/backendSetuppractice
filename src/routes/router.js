@@ -1,9 +1,16 @@
-const express = require("express");
+import express from "express";
+import {
+  getdata,
+  register,
+  login,
+  chatGPT,
+} from "../controllers/controller.js";
+import auth from "../middlewares/auth.js";
 const router = express.Router();
-const ctrl = require("../controllers/controller");
-const auth = require("../middlewares/auth");
 
-router.get("/get", auth, ctrl.getdata);
-router.post("/register", ctrl.register);
-router.post("/login", ctrl.login);
-module.exports = router;
+router.get("/get", auth, getdata);
+router.post("/register", register);
+router.post("/login", login);
+router.post("/chatGPT", chatGPT);
+export default router;
+// module.exports = router;
