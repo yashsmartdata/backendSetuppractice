@@ -2,6 +2,7 @@ import UserSchema from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Openai from "openai";
+import textract from "textract";
 
 const openai = new Openai({
   apiKey: process.env.chatgptkey,
@@ -70,7 +71,22 @@ export const chatGPT = async (req, res) => {
     ],
     max_tokens: 2000,
   });
+  // console.log(completion.choices[0].message,"........dsgdf......")
   const chatGPTResponse = completion.choices[0].message.content;
   res.send(chatGPTResponse);
 };
 
+export const extracttext = async (req, res) => {
+  const filePath = "src/controllers/Screenshot 2023-09-18 at 2.57.10 PM.png";
+  // Extract text from the file
+  const options = {
+    ext: '.png', // Replace with the desired file extension
+  };
+  textract.fromFileWithPath(filePath, options, function (error, text) {
+    if (error) {
+      console.error("Error extracting text:", error);
+    } else {
+      console.log("Extracted text:", text);
+    }
+  });
+};
