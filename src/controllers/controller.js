@@ -1,9 +1,9 @@
 import UserSchema from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { OpenAI } from "openai";
+import Openai from "openai";
 
-const openai = new OpenAI({
+const openai = new Openai({
   apiKey: process.env.chatgptkey,
 });
 export const register = async (req, res) => {
@@ -56,13 +56,21 @@ export const getdata = async (req, res) => {
 
 export const chatGPT = async (req, res) => {
   const { prompt } = req.body;
-  const completion = await openai.createCompletion({
-    model: "text-davinci-003",
-    max_token: 512,
-    temperature: 0,
-    prompt: prompt,
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "system",
+        content: "You are a helpful assistant.", // This sets the behavior of the assistant
+      },
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+    max_tokens: 2000,
   });
-  res.send(completion?.data?.choices[0]?.text);
+  const chatGPTResponse = completion.choices[0].message.content;
+  res.send(chatGPTResponse);
 };
 
-// module.exports = { getdata, register, login, chatGPT };
